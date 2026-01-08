@@ -71,3 +71,15 @@ async def get_user_order_by_id(order_id: int, current_user: str = Depends(get_cu
     if not order:
          raise HTTPException(status_code=404, detail="Order not found")
     return jsonable_encoder(order)
+
+@order_router.put('/order/update/{order_id}',status_code=status.HTTP_200_OK)
+async def update_order(order_id: int, updated_order: OrderModel, current_user: str = Depends(get_current_user)):
+    order_to_update=session.query(Order).filter(Order.id == order_id).first()
+    if not order_to_update:
+         raise HTTPException(status_code=404, detail="Order not found")
+
+    order_to_update.quantity = updated_order.quantity
+    order_to_update.pizza_size = updated_order.pizza_size
+    session.commit()
+
+    return jsonable_encoder(order_to_update)
