@@ -56,3 +56,10 @@ async def get_order_by_id(order_id: int, current_user: str = Depends(get_current
 
         return jsonable_encoder(order)
     raise HTTPException(status_code=403, detail="Not authorized to view this order")
+
+
+@order_router.get('/user/orders',status_code=status.HTTP_200_OK)
+async def get_user_orders(current_user: str = Depends(get_current_user)):
+    user=session.query(User).filter(User.username == current_user).first()
+    orders=session.query(Order).filter(Order.user_id == user.id).all()
+    return jsonable_encoder(orders)
