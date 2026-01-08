@@ -9,11 +9,11 @@ class SignUpModel(BaseModel):
     is_active: Optional[bool]=True
 
     class Config:
-         orm_mode = True
-         schema_extra = {
+         from_attributes = True
+         json_schema_extra = {
             "example": {
-                "username": "john_doe",
-                "email": "john@example.com",
+                "username": "Keshab Kamal",
+                "email": "keshabkamal@example.com",
                 "password": "secret123",
                 "is_staff": False,
                 "is_active": True
@@ -35,12 +35,10 @@ class OrderModel(BaseModel):
     user_id: Optional[int]=None
 
     class Config:
-         orm_mode = True
-         schema_extra = {
+         from_attributes = True
+         json_schema_extra = {
             "example": {
                 "quantity": 2,
-                "pizza_size": "MEDIUM",
-                "order_status": "PENDING",
-                "user_id": 1
+                "pizza_size": "MEDIUM"
             }  
         }

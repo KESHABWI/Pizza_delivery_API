@@ -8,6 +8,7 @@ from fastapi.encoders import jsonable_encoder
 from utils.jwt import create_access_token, create_refresh_token, verify_token
 from dependencies.auth import get_current_user
 
+
 auth_router = APIRouter(
     prefix="/auth",
     tags=["auth"]
@@ -25,6 +26,15 @@ async def hello(current_user: str = Depends(get_current_user)):
 # ---------------- SIGNUP ----------------
 @auth_router.post("/signup", status_code=status.HTTP_201_CREATED)
 async def signup(user: SignUpModel):
+    """
+        ## User Signup
+        This endpoint allows a new user to sign up by providing a username, email, and password.
+        - **username**: Unique username for the user (string).
+        - **email**: Unique email address for the user (string).
+        - **password**: Password for the user account (string).
+        - **is_staff**: Boolean indicating if the user has staff privileges (default is False).
+        - **is_active**: Boolean indicating if the user account is active (default is True).
+    """
 
     if session.query(User).filter(User.email == user.email).first():
         raise HTTPException(status_code=400, detail="Email already exists")
@@ -49,6 +59,12 @@ async def signup(user: SignUpModel):
 # ---------------- LOGIN ----------------
 @auth_router.post("/login",status_code=200)
 async def login(user:LoginModel):
+    """
+        ## User Login
+        This endpoint allows an existing user to log in by providing their username and password.
+        - **username**: The username of the user (string).
+        - **password**: The password of the user (string).
+    """
 
     db_user=session.query(User).filter(User.username==user.username).first()
 
@@ -71,6 +87,11 @@ async def login(user:LoginModel):
 # ---------------- REFRESH ----------------
 @auth_router.get("/refresh")
 async def refresh_token(refresh_token: str):
+    """
+        ## Refresh Access Token
+        This endpoint allows a user to refresh their access token using a valid refresh token.
+        - **refresh_token**: The refresh token provided during login (string).
+    """
     payload = verify_token(refresh_token, "refresh")
 
     if not payload:
