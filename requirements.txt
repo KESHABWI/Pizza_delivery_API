@@ -6,4 +6,4 @@ sqlalchemy_utils
 werkzeug
 python-jose[cryptography]
 passlib[bcrypt]
-python-multipart
+python-dotenv

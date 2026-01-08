@@ -2,7 +2,6 @@ from fastapi import FastAPI
 from contextlib import asynccontextmanager
 from sqlalchemy.exc import OperationalError
 import time
-
 from database import engine, Base
 from order_routes import order_router
 from auth_routes import auth_router
