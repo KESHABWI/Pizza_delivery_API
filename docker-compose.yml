@@ -17,7 +17,7 @@ services:
     ports:
       - "8000:8000"
     environment:
-      - DATABASE_URL=postgresql://postgres:Ke200207@@db/pizza_delivery
+      - DATABASE_URL=postgresql://postgres:Ke200207%40@db/pizza_delivery
     depends_on:
       - db
 

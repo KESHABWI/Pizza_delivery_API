@@ -17,7 +17,7 @@ A FastAPI-based pizza delivery service with user authentication and order manage
    docker-compose up --build
    ```
 
-2. The API will be available at `http://localhost:8000`
+2. The API will be available at `http://localhost:8001`
 
 3. The PostgreSQL database will be available at `localhost:5432`
 
