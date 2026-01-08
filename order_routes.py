@@ -34,7 +34,7 @@ async def place_an_order(order: OrderModel, current_user: str = Depends(get_curr
     return jsonable_encoder(response)
     
 
-@order_router.get('/orderslist',status_code=status.HTTP_200_OK)
+@order_router.get('/orders',status_code=status.HTTP_200_OK)
 async def list_all_orders(current_user: str = Depends(get_current_user)):
     user=session.query(User).filter(User.username == current_user).first()
 
@@ -42,3 +42,17 @@ async def list_all_orders(current_user: str = Depends(get_current_user)):
           orders=session.query(Order).all()
           return jsonable_encoder(orders)
     raise HTTPException(status_code=403, detail="Not authorized to view all orders.You are not staff member")
+
+
+@order_router.get('/orders/{order_id}',status_code=status.HTTP_200_OK)
+async def get_order_by_id(order_id: int, current_user: str = Depends(get_current_user)):
+    user=session.query(User).filter(User.username == current_user).first()
+    
+    
+    if user.is_staff:
+        order = session.query(Order).filter(Order.id == order_id).first()
+        if not order:
+         raise HTTPException(status_code=404, detail="Order not found")
+
+        return jsonable_encoder(order)
+    raise HTTPException(status_code=403, detail="Not authorized to view this order")
