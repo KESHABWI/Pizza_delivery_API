@@ -83,3 +83,14 @@ async def update_order(order_id: int, updated_order: OrderModel, current_user: s
     session.commit()
 
     return jsonable_encoder(order_to_update)
+
+@order_router.delete('/order/delete/{order_id}',status_code=status.HTTP_200_OK)
+async def delete_order(order_id: int, current_user: str = Depends(get_current_user)):   
+    order_to_delete=session.query(Order).filter(Order.id == order_id).first()
+    if not order_to_delete:
+         raise HTTPException(status_code=404, detail="Order not found")
+
+    session.delete(order_to_delete)
+    session.commit()
+
+    return {"message": "Order deleted successfully"}
